@@ -1,0 +1,54 @@
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns="http://www.springframework.org/schema/beans"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+ 		                   http://www.springframework.org/schema/beans/spring-beans-4.3.xsd">
+
+    <bean id="birthdayDiscountStrategy" class="by.epam.maksim.movietheater.service.strategy.discount.BirthdayDiscountStrategyImpl">
+        <constructor-arg type="long" value="2"/>
+        <constructor-arg type="byte" value="5"/>
+    </bean>
+
+    <bean id="tenthTicketDiscountStrategy" class="by.epam.maksim.movietheater.service.strategy.discount.TenthTicketDiscountStrategyImpl">
+        <constructor-arg value="50"/>
+    </bean>
+
+
+    <bean id="mockDiscountStrategy1" class="org.mockito.Mockito" factory-method="mock">
+        <constructor-arg value="by.epam.maksim.movietheater.service.strategy.DiscountStrategy"/>
+    </bean>
+
+    <bean id="mockDiscountStrategy2" class="org.mockito.Mockito" factory-method="mock">
+        <constructor-arg value="by.epam.maksim.movietheater.service.strategy.DiscountStrategy"/>
+    </bean>
+
+    <bean id="discountService" class="by.epam.maksim.movietheater.service.impl.DiscountServiceImpl">
+        <constructor-arg>
+            <list>
+                <ref bean="mockDiscountStrategy1"/>
+                <ref bean="mockDiscountStrategy2"/>
+            </list>
+        </constructor-arg>
+    </bean>
+
+
+    <bean id="mockTicketRepository" class="org.mockito.Mockito" factory-method="mock">
+        <constructor-arg value="by.epam.maksim.movietheater.repository.TicketRepository"/>
+    </bean>
+
+    <bean id="mockDiscountService" class="org.mockito.Mockito" factory-method="mock">
+        <constructor-arg value="by.epam.maksim.movietheater.service.DiscountService"/>
+    </bean>
+
+    <bean id="mockUserService" class="org.mockito.Mockito" factory-method="mock">
+        <constructor-arg value="by.epam.maksim.movietheater.service.UserService"/>
+    </bean>
+
+    <bean id="bookingService" class="by.epam.maksim.movietheater.service.impl.BookingServiceImpl">
+        <constructor-arg ref="mockTicketRepository"/>
+        <constructor-arg ref="mockDiscountService"/>
+        <constructor-arg ref="mockUserService"/>
+        <constructor-arg index="3" value="1.2"/>
+        <constructor-arg index="4" value="2"/>
+    </bean>
+
+</beans>
