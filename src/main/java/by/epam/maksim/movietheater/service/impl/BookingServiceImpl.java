@@ -8,14 +8,17 @@ import by.epam.maksim.movietheater.repository.TicketRepository;
 import by.epam.maksim.movietheater.service.BookingService;
 import by.epam.maksim.movietheater.service.DiscountService;
 import by.epam.maksim.movietheater.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+@Service
 public class BookingServiceImpl extends AbstractGenericService<Ticket, TicketRepository> implements BookingService {
 
     private final DiscountService discountService;
@@ -24,8 +27,10 @@ public class BookingServiceImpl extends AbstractGenericService<Ticket, TicketRep
     private final double multiplierForHighRatedEvents;
     private final double multiplierForVipSeats;
 
+    @Autowired
     public BookingServiceImpl(TicketRepository repository, DiscountService discountService, UserService userService,
-            double multiplierForHighRatedEvents, double multiplierForVipSeats) {
+            @Value("${event.highrated.multiplier}") double multiplierForHighRatedEvents,
+            @Value("${seats.vip.multiplier}") double multiplierForVipSeats) {
         super(repository);
         this.discountService = discountService;
         this.userService = userService;
@@ -34,12 +39,20 @@ public class BookingServiceImpl extends AbstractGenericService<Ticket, TicketRep
     }
 
     @Override
-    public BigDecimal getTicketsPrice(@Nonnull Event event, @Nonnull LocalDateTime dateTime, @Nullable User user,
-            @Nonnull Set<Long> seats) {
+    public BigDecimal getTicketsPrice(Event event, LocalDateTime dateTime, User user, Set<Long> seats) {
+        int ticketNumber = 1;
+        BigDecimal overallPrice = BigDecimal.ZERO;
+        for (Long seat : seats) {
+            overallPrice = overallPrice.add(getTicketPrice(event, dateTime, user, seat, ticketNumber++));
+        }
+        return overallPrice;
+    }
+
+    private BigDecimal getTicketPrice(Event event, LocalDateTime airDateTime, User user, long seat, int ticketNumber) {
         BigDecimal basePrice = calculateBasePrice(event);
-        long vipSeatsToPurchase = event.getAuditoriums().get(dateTime).countVipSeats(seats);
-        long regularSeatsToPurchase = seats.size() - vipSeatsToPurchase;
-        byte discount = discountService.getDiscount(user, event, dateTime, seats.size());
+        long vipSeatsToPurchase = event.getAuditoriums().get(airDateTime).countVipSeats(Collections.singleton(seat));
+        long regularSeatsToPurchase = 1 - vipSeatsToPurchase;
+        byte discount = discountService.getDiscount(user, event, airDateTime, ticketNumber);
 
         BigDecimal overallPrice = calculateVipSeatsPrice(basePrice, vipSeatsToPurchase)
                 .add(calculateRegularSeatsPrice(basePrice, regularSeatsToPurchase));
@@ -72,7 +85,7 @@ public class BookingServiceImpl extends AbstractGenericService<Ticket, TicketRep
     }
 
     @Override
-    public void bookTickets(@Nonnull Set<Ticket> tickets) {
+    public void bookTickets(Set<Ticket> tickets) {
         tickets.forEach(ticket -> {
             User user = ticket.getUser();
             if (user != null) {
@@ -83,12 +96,11 @@ public class BookingServiceImpl extends AbstractGenericService<Ticket, TicketRep
         });
     }
 
-    @Nonnull
     @Override
-    public Set<Ticket> getPurchasedTicketsForEvent(@Nonnull Event event, @Nonnull LocalDateTime dateTime) {
+    public Set<Ticket> getPurchasedTicketsForEvent(Event event, LocalDateTime dateTime) {
         return getAll().stream()
                 .filter(ticket -> event.equals(ticket.getEvent()))
-                .filter(ticket -> dateTime.isEqual(ticket.getDateTime()))
+                .filter(ticket -> dateTime.isEqual(ticket.getAirDateTime()))
                 .collect(Collectors.toSet());
     }
 

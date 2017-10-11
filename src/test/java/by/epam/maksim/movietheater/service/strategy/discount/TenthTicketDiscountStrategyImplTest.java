@@ -1,5 +1,6 @@
 package by.epam.maksim.movietheater.service.strategy.discount;
 
+import by.epam.maksim.movietheater.config.TestAppConfig;
 import by.epam.maksim.movietheater.domain.Event;
 import by.epam.maksim.movietheater.domain.Ticket;
 import by.epam.maksim.movietheater.domain.User;
@@ -20,11 +21,11 @@ import static by.epam.maksim.movietheater.service.DiscountService.NO_DISCOUNT;
 import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration("classpath:spring/test-service-context.xml")
+@ContextConfiguration(classes = TestAppConfig.class)
 public class TenthTicketDiscountStrategyImplTest {
 
     @Autowired
-    @Qualifier("tenthTicketDiscountStrategy")
+    @Qualifier("tenthTicketDiscountStrategyImpl")
     private DiscountStrategy tenthTicketStrategy;
 
     @Test
@@ -43,12 +44,12 @@ public class TenthTicketDiscountStrategyImplTest {
     }
 
     @Test
-    public void discountInCaseRegisteredUserBoughtEnoughTickets() {
+    public void noDiscountInCaseRegisteredUserBoughtEnoughTickets() {
         User user = new User();
         user.getTickets().addAll(IntStream.range(0, 6)
                 .mapToObj(i -> new Ticket(user, new Event(), LocalDateTime.now().plusDays(5), i))
                 .collect(Collectors.toSet()));
-        assertEquals(FIFTY_PERCENTAGE_DISCOUNT, tenthTicketStrategy.calculateDiscount(user, new Event(), LocalDateTime.now(), 5));
+        assertEquals(NO_DISCOUNT, tenthTicketStrategy.calculateDiscount(user, new Event(), LocalDateTime.now(), 5));
     }
 
     @Test
@@ -58,6 +59,15 @@ public class TenthTicketDiscountStrategyImplTest {
                 .mapToObj(i -> new Ticket(user, new Event(), LocalDateTime.now().plusDays(5), i))
                 .collect(Collectors.toSet()));
         assertEquals(NO_DISCOUNT, tenthTicketStrategy.calculateDiscount(user, new Event(), LocalDateTime.now(), 3));
+    }
+
+    @Test
+    public void discountInCaseRegisteredUserBoughtExactTenTickets() {
+        User user = new User();
+        user.getTickets().addAll(IntStream.range(0, 9)
+                .mapToObj(i -> new Ticket(user, new Event(), LocalDateTime.now().plusDays(5), i))
+                .collect(Collectors.toSet()));
+        assertEquals(FIFTY_PERCENTAGE_DISCOUNT, tenthTicketStrategy.calculateDiscount(user, new Event(), LocalDateTime.now(), 1));
     }
 
 }

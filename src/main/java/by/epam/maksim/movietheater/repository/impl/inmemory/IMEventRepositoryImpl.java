@@ -3,15 +3,13 @@ package by.epam.maksim.movietheater.repository.impl.inmemory;
 import by.epam.maksim.movietheater.domain.Event;
 import by.epam.maksim.movietheater.repository.EventRepository;
 import org.apache.commons.lang3.SerializationUtils;
+import org.springframework.stereotype.Repository;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
+@Repository
 public class IMEventRepositoryImpl extends IMAbstractGenericRepository<Event> implements EventRepository {
 
-    @Nullable
     @Override
-    public Event getByName(@Nonnull String name) {
+    public Event getByName(String name) {
         return storage.values().stream()
                 .filter(event -> name.equals(event.getName()))
                 .map(SerializationUtils::clone)

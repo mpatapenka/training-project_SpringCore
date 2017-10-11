@@ -4,26 +4,29 @@ import by.epam.maksim.movietheater.domain.Event;
 import by.epam.maksim.movietheater.domain.User;
 import by.epam.maksim.movietheater.service.DiscountService;
 import by.epam.maksim.movietheater.service.strategy.DiscountStrategy;
-import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.time.LocalDateTime;
 
-@AllArgsConstructor
+@Component
 public class TenthTicketDiscountStrategyImpl implements DiscountStrategy {
 
     private static final int TICKETS_TO_GIVE_DISCOUNT = 10;
 
     private final byte discount;
 
+    public TenthTicketDiscountStrategyImpl(@Value("${strategy.tenthticket.discount}") byte discount) {
+        this.discount = discount;
+    }
+
     @Override
-    public byte calculateDiscount(@Nullable User user, @Nonnull Event event, @Nonnull LocalDateTime airDateTime,
-            long numberOfTickets) {
+    public byte calculateDiscount(User user, Event event, LocalDateTime airDateTime, int numberOfTicket) {
         // Check discount for unregistered user
-        if ((user == null && numberOfTickets >= TICKETS_TO_GIVE_DISCOUNT)
+        if ((user == null && numberOfTicket >= TICKETS_TO_GIVE_DISCOUNT)
                 // Check discount for registered user
-                || (user != null && (user.getTickets().size() + numberOfTickets) / TICKETS_TO_GIVE_DISCOUNT >= 1)) {
+                || (user != null && (user.getTickets().size() + numberOfTicket) / TICKETS_TO_GIVE_DISCOUNT >= 1
+                        && (user.getTickets().size() + numberOfTicket) % TICKETS_TO_GIVE_DISCOUNT == 0)) {
             return discount;
         }
         return DiscountService.NO_DISCOUNT;

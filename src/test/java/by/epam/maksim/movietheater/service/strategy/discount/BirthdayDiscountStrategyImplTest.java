@@ -1,5 +1,6 @@
 package by.epam.maksim.movietheater.service.strategy.discount;
 
+import by.epam.maksim.movietheater.config.TestAppConfig;
 import by.epam.maksim.movietheater.domain.Event;
 import by.epam.maksim.movietheater.domain.User;
 import by.epam.maksim.movietheater.service.strategy.DiscountStrategy;
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.support.AnnotationConfigContextLoader;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -18,11 +20,11 @@ import static by.epam.maksim.movietheater.service.DiscountService.NO_DISCOUNT;
 import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration("classpath:spring/test-service-context.xml")
+@ContextConfiguration(classes = TestAppConfig.class, loader = AnnotationConfigContextLoader.class)
 public class BirthdayDiscountStrategyImplTest {
 
     @Autowired
-    @Qualifier("birthdayDiscountStrategy")
+    @Qualifier("birthdayDiscountStrategyImpl")
     private DiscountStrategy birthdayStrategy;
 
     @Test

@@ -1,0 +1,18 @@
+<Configuration status="ERROR" strict="true" name="TradeSystemLog4j2Configuration" dest="err">
+    <Appenders>
+        <Appender name="Console" type="Console">
+            <Layout type="PatternLayout" pattern="%d{dd-MM-yyyy HH:mm:ss} [%-5p] %c - %m %ex%n"/>
+        </Appender>
+        <Appender name="Async" type="Async">
+            <AppenderRef ref="Console"/>
+        </Appender>
+    </Appenders>
+    <Loggers>
+        <Logger name="by.epam.maksim.movietheater" level="DEBUG" additivity="false">
+            <AppenderRef ref="Async"/>
+        </Logger>
+        <Root level="WARN">
+            <AppenderRef ref="Async"/>
+        </Root>
+    </Loggers>
+</Configuration>

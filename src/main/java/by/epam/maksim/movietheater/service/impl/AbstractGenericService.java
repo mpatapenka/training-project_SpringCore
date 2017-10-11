@@ -1,37 +1,37 @@
 package by.epam.maksim.movietheater.service.impl;
 
-import by.epam.maksim.movietheater.domain.IdentifiedDomain;
+import by.epam.maksim.movietheater.domain.IdentifiedEntity;
 import by.epam.maksim.movietheater.repository.GenericRepository;
 import by.epam.maksim.movietheater.service.GenericService;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 
-import javax.annotation.Nonnull;
 import java.util.Collection;
 
 @AllArgsConstructor
-abstract class AbstractGenericService<T extends IdentifiedDomain, REPOSITORY extends GenericRepository<T>>
-        implements GenericService<T> {
+abstract class AbstractGenericService<E extends IdentifiedEntity, REPOSITORY extends GenericRepository<E>>
+        implements GenericService<E> {
 
+    @Autowired
     REPOSITORY repository;
 
     @Override
-    public T save(@Nonnull T object) {
+    public E save(E object) {
         return repository.save(object);
     }
 
     @Override
-    public void remove(@Nonnull T object) {
+    public void remove(E object) {
         repository.remove(object);
     }
 
     @Override
-    public T getById(@Nonnull Long id) {
+    public E getById(Long id) {
         return repository.getById(id);
     }
 
-    @Nonnull
     @Override
-    public Collection<T> getAll() {
+    public Collection<E> getAll() {
         return repository.getAll();
     }
 

@@ -1,5 +1,6 @@
 package by.epam.maksim.movietheater.service.impl;
 
+import by.epam.maksim.movietheater.config.TestAppConfig;
 import by.epam.maksim.movietheater.domain.Event;
 import by.epam.maksim.movietheater.domain.User;
 import by.epam.maksim.movietheater.service.DiscountService;
@@ -16,12 +17,12 @@ import static by.epam.maksim.movietheater.service.DiscountService.FIFTY_PERCENTA
 import static by.epam.maksim.movietheater.service.DiscountService.FIVE_PERCENTAGE_DISCOUNT;
 import static by.epam.maksim.movietheater.service.DiscountService.NO_DISCOUNT;
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Matchers.anyLong;
+import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.anyObject;
 import static org.mockito.Mockito.doReturn;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration("classpath:spring/test-service-context.xml")
+@ContextConfiguration(classes = TestAppConfig.class)
 public class DiscountServiceImplTest {
 
     @Autowired
@@ -35,24 +36,24 @@ public class DiscountServiceImplTest {
 
     @Test
     public void noDiscountInCaseNoOneAppliedDiscountStrategy() {
-        doReturn(NO_DISCOUNT).when(mockDiscountStrategy1).calculateDiscount(anyObject(), anyObject(), anyObject(), anyLong());
-        doReturn(NO_DISCOUNT).when(mockDiscountStrategy2).calculateDiscount(anyObject(), anyObject(), anyObject(), anyLong());
+        doReturn(NO_DISCOUNT).when(mockDiscountStrategy1).calculateDiscount(anyObject(), anyObject(), anyObject(), anyInt());
+        doReturn(NO_DISCOUNT).when(mockDiscountStrategy2).calculateDiscount(anyObject(), anyObject(), anyObject(), anyInt());
 
         assertEquals(NO_DISCOUNT, discountService.getDiscount(new User(), new Event(), LocalDateTime.now(), 5));
     }
 
     @Test
     public void discountAccordingToOneOfDiscountStrategy() {
-        doReturn(NO_DISCOUNT).when(mockDiscountStrategy1).calculateDiscount(anyObject(), anyObject(), anyObject(), anyLong());
-        doReturn(FIVE_PERCENTAGE_DISCOUNT).when(mockDiscountStrategy2).calculateDiscount(anyObject(), anyObject(), anyObject(), anyLong());
+        doReturn(NO_DISCOUNT).when(mockDiscountStrategy1).calculateDiscount(anyObject(), anyObject(), anyObject(), anyInt());
+        doReturn(FIVE_PERCENTAGE_DISCOUNT).when(mockDiscountStrategy2).calculateDiscount(anyObject(), anyObject(), anyObject(), anyInt());
 
         assertEquals(FIVE_PERCENTAGE_DISCOUNT, discountService.getDiscount(new User(), new Event(), LocalDateTime.now(), 5));
     }
 
     @Test
     public void maximalDiscountAccordingToAllDiscountStrategies() {
-        doReturn(FIFTY_PERCENTAGE_DISCOUNT).when(mockDiscountStrategy1).calculateDiscount(anyObject(), anyObject(), anyObject(), anyLong());
-        doReturn(FIVE_PERCENTAGE_DISCOUNT).when(mockDiscountStrategy2).calculateDiscount(anyObject(), anyObject(), anyObject(), anyLong());
+        doReturn(FIFTY_PERCENTAGE_DISCOUNT).when(mockDiscountStrategy1).calculateDiscount(anyObject(), anyObject(), anyObject(), anyInt());
+        doReturn(FIVE_PERCENTAGE_DISCOUNT).when(mockDiscountStrategy2).calculateDiscount(anyObject(), anyObject(), anyObject(), anyInt());
 
         assertEquals(FIFTY_PERCENTAGE_DISCOUNT, discountService.getDiscount(new User(), new Event(), LocalDateTime.now(), 5));
     }

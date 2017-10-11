@@ -12,8 +12,8 @@ import java.util.stream.Collectors;
 import java.util.stream.LongStream;
 import java.util.stream.Stream;
 
-@Getter
 @AllArgsConstructor
+@Getter
 @EqualsAndHashCode
 @ToString
 public class Auditorium implements Serializable {
@@ -23,17 +23,9 @@ public class Auditorium implements Serializable {
     private final Set<Long> vipSeats;
 
     public Auditorium(String name, long numberOfSeats, String vipSeatsAsString) {
-        this.name = name;
-        this.numberOfSeats = numberOfSeats;
-        this.vipSeats = Stream.of(vipSeatsAsString.split(",")).map(Long::valueOf).collect(Collectors.toSet());
+        this(name, numberOfSeats, Stream.of(vipSeatsAsString.split(",")).map(Long::valueOf).collect(Collectors.toSet()));
     }
 
-    /**
-     * Counts how many vip seats are there in supplied <code>seats</code>.
-     *
-     * @param seats Seats to process.
-     * @return number of vip seats in request.
-     */
     public long countVipSeats(Collection<Long> seats) {
         return seats.stream().filter(vipSeats::contains).count();
     }
