@@ -5,6 +5,7 @@ import by.epam.maksim.movietheater.domain.Event;
 import by.epam.maksim.movietheater.domain.User;
 import by.epam.maksim.movietheater.service.DiscountService;
 import by.epam.maksim.movietheater.service.strategy.DiscountStrategy;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,7 @@ import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.anyObject;
 import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.reset;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = TestAppConfig.class)
@@ -33,6 +35,12 @@ public class DiscountServiceImplTest {
 
     @Autowired
     private DiscountStrategy mockDiscountStrategy2;
+
+    @Before
+    public void beforeTest() {
+        reset(mockDiscountStrategy1);
+        reset(mockDiscountStrategy2);
+    }
 
     @Test
     public void noDiscountInCaseNoOneAppliedDiscountStrategy() {

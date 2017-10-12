@@ -18,6 +18,7 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.annotation.Scope;
 
 import java.util.Arrays;
+import java.util.Random;
 
 import static org.mockito.Mockito.mock;
 
@@ -70,6 +71,12 @@ public class TestAppConfig {
     @Scope("prototype")
     public Event event() {
         return new Event();
+    }
+
+    @Bean
+    @Scope("prototype")
+    public Random random() {
+        return new Random();
     }
 
     @Bean

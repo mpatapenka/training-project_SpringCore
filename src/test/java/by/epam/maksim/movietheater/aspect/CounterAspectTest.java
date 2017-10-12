@@ -6,6 +6,7 @@ import by.epam.maksim.movietheater.domain.Ticket;
 import by.epam.maksim.movietheater.service.BookingService;
 import by.epam.maksim.movietheater.service.CounterService;
 import com.google.common.collect.Sets;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.ObjectFactory;
@@ -20,6 +21,7 @@ import java.util.Set;
 import static by.epam.maksim.movietheater.service.CounterService.BOOK_TICKET_FOR_EVENT_DOMAIN;
 import static by.epam.maksim.movietheater.service.CounterService.GET_BASE_PRICE_DOMAIN;
 import static by.epam.maksim.movietheater.service.CounterService.GET_NAME_DOMAIN;
+import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
@@ -35,6 +37,11 @@ public class CounterAspectTest {
 
     @Autowired
     private BookingService bookingService;
+
+    @Before
+    public void beforeTest() {
+        reset(mockCounterService);
+    }
 
     @Test
     public void checkHowManyTimesEventGetNameCalled() {

@@ -56,14 +56,6 @@ public class BookingServiceImplTest {
     @Autowired
     private UserService mockUserService;
 
-    private Event createStubEvent(LocalDateTime airDateTime, EventRating rating) {
-        Event event = new Event();
-        event.setBasePrice(basePrice);
-        event.setRating(rating);
-        event.getAuditoriums().put(airDateTime, mockAuditorium);
-        return event;
-    }
-
     @Before
     public void beforeTest() {
         reset(mockDiscountService);
@@ -181,6 +173,14 @@ public class BookingServiceImplTest {
         Set<Ticket> tickets = bookingService.getPurchasedTicketsForEvent(event, airDate);
 
         assertEquals(3, tickets.size());
+    }
+
+    private Event createStubEvent(LocalDateTime airDateTime, EventRating rating) {
+        Event event = new Event();
+        event.setBasePrice(basePrice);
+        event.setRating(rating);
+        event.getAuditoriums().put(airDateTime, mockAuditorium);
+        return event;
     }
 
 }
