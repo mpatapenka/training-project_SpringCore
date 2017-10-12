@@ -17,7 +17,7 @@ import java.util.TreeSet;
 @Setter
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
-public class Event extends IdentifiedDomain {
+public class Event extends IdentifiedEntity {
 
     private String name;
     private BigDecimal basePrice;

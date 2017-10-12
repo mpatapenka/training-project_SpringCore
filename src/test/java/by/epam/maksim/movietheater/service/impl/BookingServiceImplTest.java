@@ -1,5 +1,6 @@
 package by.epam.maksim.movietheater.service.impl;
 
+import by.epam.maksim.movietheater.config.TestAppConfig;
 import by.epam.maksim.movietheater.domain.Auditorium;
 import by.epam.maksim.movietheater.domain.Event;
 import by.epam.maksim.movietheater.domain.EventRating;
@@ -19,6 +20,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.Set;
 
 import static by.epam.maksim.movietheater.service.DiscountService.FIFTY_PERCENTAGE_DISCOUNT;
@@ -27,7 +29,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyCollectionOf;
-import static org.mockito.Matchers.anyLong;
+import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.anyObject;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
@@ -36,7 +38,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration("classpath:spring/test-service-context.xml")
+@ContextConfiguration(classes = TestAppConfig.class)
 public class BookingServiceImplTest {
 
     private static final BigDecimal basePrice = new BigDecimal(100);
@@ -54,14 +56,6 @@ public class BookingServiceImplTest {
     @Autowired
     private UserService mockUserService;
 
-    private Event createStubEvent(LocalDateTime airDateTime, EventRating rating) {
-        Event event = new Event();
-        event.setBasePrice(basePrice);
-        event.setRating(rating);
-        event.getAuditoriums().put(airDateTime, mockAuditorium);
-        return event;
-    }
-
     @Before
     public void beforeTest() {
         reset(mockDiscountService);
@@ -72,7 +66,7 @@ public class BookingServiceImplTest {
 
     @Test
     public void checkTotalPriceInCaseNoDiscountAndOnlyRegularSeatsAndNotHighRatingEvent() {
-        doReturn(NO_DISCOUNT).when(mockDiscountService).getDiscount(anyObject(), anyObject(), anyObject(), anyLong());
+        doReturn(NO_DISCOUNT).when(mockDiscountService).getDiscount(anyObject(), anyObject(), anyObject(), anyInt());
         doReturn(0L).when(mockAuditorium).countVipSeats(anyCollectionOf(Long.class));
 
         LocalDateTime now = LocalDateTime.now();
@@ -84,7 +78,7 @@ public class BookingServiceImplTest {
 
     @Test
     public void checkTotalPriceInCaseNoDiscountAndOnlyRegularSeatsAndHighRatingEvent() {
-        doReturn(NO_DISCOUNT).when(mockDiscountService).getDiscount(anyObject(), anyObject(), anyObject(), anyLong());
+        doReturn(NO_DISCOUNT).when(mockDiscountService).getDiscount(anyObject(), anyObject(), anyObject(), anyInt());
         doReturn(0L).when(mockAuditorium).countVipSeats(anyCollectionOf(Long.class));
 
         LocalDateTime now = LocalDateTime.now();
@@ -96,7 +90,7 @@ public class BookingServiceImplTest {
 
     @Test
     public void checkTotalPriceInCaseDiscountAndOnlyRegularSeatsAndNotHighRatingEvent() {
-        doReturn(FIFTY_PERCENTAGE_DISCOUNT).when(mockDiscountService).getDiscount(anyObject(), anyObject(), anyObject(), anyLong());
+        doReturn(FIFTY_PERCENTAGE_DISCOUNT).when(mockDiscountService).getDiscount(anyObject(), anyObject(), anyObject(), anyInt());
         doReturn(0L).when(mockAuditorium).countVipSeats(anyCollectionOf(Long.class));
 
         LocalDateTime now = LocalDateTime.now();
@@ -108,7 +102,7 @@ public class BookingServiceImplTest {
 
     @Test
     public void checkTotalPriceInCaseDiscountAndOnlyRegularSeatsAndHighRatingEvent() {
-        doReturn(FIFTY_PERCENTAGE_DISCOUNT).when(mockDiscountService).getDiscount(anyObject(), anyObject(), anyObject(), anyLong());
+        doReturn(FIFTY_PERCENTAGE_DISCOUNT).when(mockDiscountService).getDiscount(anyObject(), anyObject(), anyObject(), anyInt());
         doReturn(0L).when(mockAuditorium).countVipSeats(anyCollectionOf(Long.class));
 
         LocalDateTime now = LocalDateTime.now();
@@ -120,8 +114,8 @@ public class BookingServiceImplTest {
 
     @Test
     public void checkTotalPriceInCaseDiscountAndVipAndRegularSeatsAndHighRatingEvent() {
-        doReturn(FIFTY_PERCENTAGE_DISCOUNT).when(mockDiscountService).getDiscount(anyObject(), anyObject(), anyObject(), anyLong());
-        doReturn(1L).when(mockAuditorium).countVipSeats(anyCollectionOf(Long.class));
+        doReturn(FIFTY_PERCENTAGE_DISCOUNT).when(mockDiscountService).getDiscount(anyObject(), anyObject(), anyObject(), anyInt());
+        doReturn(1L).when(mockAuditorium).countVipSeats(Collections.singleton(1L));
 
         LocalDateTime now = LocalDateTime.now();
         Event event = createStubEvent(now, EventRating.HIGH);
@@ -179,6 +173,14 @@ public class BookingServiceImplTest {
         Set<Ticket> tickets = bookingService.getPurchasedTicketsForEvent(event, airDate);
 
         assertEquals(3, tickets.size());
+    }
+
+    private Event createStubEvent(LocalDateTime airDateTime, EventRating rating) {
+        Event event = new Event();
+        event.setBasePrice(basePrice);
+        event.setRating(rating);
+        event.getAuditoriums().put(airDateTime, mockAuditorium);
+        return event;
     }
 
 }

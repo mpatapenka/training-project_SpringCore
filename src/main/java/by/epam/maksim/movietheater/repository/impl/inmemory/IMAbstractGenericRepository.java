@@ -1,46 +1,44 @@
 package by.epam.maksim.movietheater.repository.impl.inmemory;
 
-import by.epam.maksim.movietheater.domain.IdentifiedDomain;
+import by.epam.maksim.movietheater.domain.IdentifiedEntity;
 import by.epam.maksim.movietheater.repository.GenericRepository;
 import org.apache.commons.lang3.SerializationUtils;
 
-import javax.annotation.Nonnull;
 import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 
-abstract class IMAbstractGenericRepository<T extends IdentifiedDomain> implements GenericRepository<T> {
+abstract class IMAbstractGenericRepository<E extends IdentifiedEntity> implements GenericRepository<E> {
 
     private final AtomicLong idCounter = new AtomicLong(1);
-    final Map<Long, T> storage = new ConcurrentHashMap<>();
+    final Map<Long, E> storage = new ConcurrentHashMap<>();
 
     @Override
-    public T save(@Nonnull T object) {
-        if (object.getId() == null) {
-            object.setId(idCounter.getAndIncrement());
+    public E save(E entity) {
+        if (entity.getId() == null) {
+            entity.setId(idCounter.getAndIncrement());
         }
-        storage.put(object.getId(), SerializationUtils.clone(object));
-        return object;
+        storage.put(entity.getId(), SerializationUtils.clone(entity));
+        return entity;
     }
 
     @Override
-    public void remove(@Nonnull T object) {
-        if (object.getId() == null) {
-            throw new IllegalArgumentException("Object can't be deleted, id is 'null'.");
+    public void remove(E entity) {
+        if (entity.getId() == null) {
+            throw new IllegalArgumentException("Entity can't be deleted, id is 'null'.");
         }
-        storage.remove(object.getId());
+        storage.remove(entity.getId());
     }
 
     @Override
-    public T getById(@Nonnull Long id) {
+    public E getById(Long id) {
         return SerializationUtils.clone(storage.get(id));
     }
 
-    @Nonnull
     @Override
-    public Collection<T> getAll() {
+    public Collection<E> getAll() {
         return storage.values().stream().map(SerializationUtils::clone).collect(Collectors.toList());
     }
 

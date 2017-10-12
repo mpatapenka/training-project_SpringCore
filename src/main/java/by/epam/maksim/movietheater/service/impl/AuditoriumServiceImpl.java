@@ -3,27 +3,24 @@ package by.epam.maksim.movietheater.service.impl;
 import by.epam.maksim.movietheater.domain.Auditorium;
 import by.epam.maksim.movietheater.service.AuditoriumService;
 import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Service;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.util.HashSet;
+import java.util.Collection;
 import java.util.Map;
-import java.util.Set;
 
+@Service
 @AllArgsConstructor
 public class AuditoriumServiceImpl implements AuditoriumService {
 
     private final Map<String, Auditorium> storage;
 
-    @Nonnull
     @Override
-    public Set<Auditorium> getAll() {
-        return new HashSet<>(storage.values());
+    public Collection<Auditorium> getAll() {
+        return storage.values();
     }
 
-    @Nullable
     @Override
-    public Auditorium getByName(@Nonnull String name) {
+    public Auditorium getByName(String name) {
         return storage.get(name);
     }
 

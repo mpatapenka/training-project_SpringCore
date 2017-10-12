@@ -11,6 +11,6 @@ import java.io.Serializable;
 @Setter
 @EqualsAndHashCode
 @ToString
-public abstract class IdentifiedDomain implements Serializable {
+public abstract class IdentifiedEntity implements Serializable {
     private Long id;
 }
