@@ -22,10 +22,10 @@ import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = TestAppConfig.class)
-public class TenthTicketDiscountStrategyImplTest {
+public class TenthTicketDiscountStrategyTest {
 
     @Autowired
-    @Qualifier("tenthTicketDiscountStrategyImpl")
+    @Qualifier("tenthTicketDiscountStrategy")
     private DiscountStrategy tenthTicketStrategy;
 
     @Test

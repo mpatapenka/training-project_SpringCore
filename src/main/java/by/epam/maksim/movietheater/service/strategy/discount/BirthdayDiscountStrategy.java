@@ -1,5 +1,6 @@
 package by.epam.maksim.movietheater.service.strategy.discount;
 
+import by.epam.maksim.movietheater.annotation.DiscountStrategyQualifier;
 import by.epam.maksim.movietheater.domain.Event;
 import by.epam.maksim.movietheater.domain.User;
 import by.epam.maksim.movietheater.service.DiscountService;
@@ -10,12 +11,13 @@ import org.springframework.stereotype.Component;
 import java.time.LocalDateTime;
 
 @Component
-public class BirthdayDiscountStrategyImpl implements DiscountStrategy {
+@DiscountStrategyQualifier
+public class BirthdayDiscountStrategy implements DiscountStrategy {
 
     private final long daysWithinAirDate;
     private final byte discount;
 
-    public BirthdayDiscountStrategyImpl(@Value("${strategy.birthday.dayswithinairdate}") long daysWithinAirDate,
+    public BirthdayDiscountStrategy(@Value("${strategy.birthday.dayswithinairdate}") long daysWithinAirDate,
             @Value("${strategy.birthday.discount}") byte discount) {
         this.daysWithinAirDate = daysWithinAirDate;
         this.discount = discount;

@@ -1,4 +1,4 @@
-package by.epam.maksim.movietheater.repository.impl.inmemory;
+package by.epam.maksim.movietheater.repository.inmemory;
 
 import by.epam.maksim.movietheater.domain.Counter;
 import by.epam.maksim.movietheater.repository.CounterRepository;
@@ -14,9 +14,9 @@ import java.util.Set;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 @Repository
-public class IMCounterRepositoryImpl implements CounterRepository {
+public class IMCounterRepository implements CounterRepository {
 
-    private static final Logger log = LoggerFactory.getLogger(IMCounterRepositoryImpl.class);
+    private static final Logger log = LoggerFactory.getLogger(IMCounterRepository.class);
 
     private final ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
     private final Multimap<Class<?>, Counter> typeToCounter = HashMultimap.create();

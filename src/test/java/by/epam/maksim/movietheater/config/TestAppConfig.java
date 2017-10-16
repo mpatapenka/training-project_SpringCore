@@ -28,8 +28,11 @@ import static org.mockito.Mockito.mock;
 @PropertySource({"classpath:properties/app.properties"})
 public class TestAppConfig {
 
-    @Value("${event.highrated.multiplier}") private double multiplierForHighRatedEvents;
-    @Value("${seats.vip.multiplier}") private double multiplierForVipSeats;
+    @Value("${event.highrated.multiplier}")
+    private double multiplierForHighRatedEvents;
+
+    @Value("${seats.vip.multiplier}")
+    private double multiplierForVipSeats;
 
     @Bean
     public DiscountStrategy mockDiscountStrategy1() {

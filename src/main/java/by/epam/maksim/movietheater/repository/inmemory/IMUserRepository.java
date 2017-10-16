@@ -1,4 +1,4 @@
-package by.epam.maksim.movietheater.repository.impl.inmemory;
+package by.epam.maksim.movietheater.repository.inmemory;
 
 import by.epam.maksim.movietheater.domain.User;
 import by.epam.maksim.movietheater.repository.UserRepository;
@@ -6,7 +6,7 @@ import org.apache.commons.lang3.SerializationUtils;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class IMUserRepositoryImpl extends IMAbstractGenericRepository<User> implements UserRepository {
+public class IMUserRepository extends IMGenericRepository<User> implements UserRepository {
 
     @Override
     public User getUserByEmail(String email) {

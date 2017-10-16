@@ -1,4 +1,4 @@
-package by.epam.maksim.movietheater.repository.impl.inmemory;
+package by.epam.maksim.movietheater.repository.inmemory;
 
 import by.epam.maksim.movietheater.domain.IdentifiedEntity;
 import by.epam.maksim.movietheater.repository.GenericRepository;
@@ -10,7 +10,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 
-abstract class IMAbstractGenericRepository<E extends IdentifiedEntity> implements GenericRepository<E> {
+abstract class IMGenericRepository<E extends IdentifiedEntity> implements GenericRepository<E> {
 
     private final AtomicLong idCounter = new AtomicLong(1);
     final Map<Long, E> storage = new ConcurrentHashMap<>();

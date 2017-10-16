@@ -12,8 +12,8 @@ import java.io.File;
 import java.util.Map;
 
 @Configuration
-@ComponentScan(basePackages = "by.epam.maksim.movietheater.service")
-@Import({RepositoryConfig.class, DiscountConfig.class})
+@ComponentScan(basePackages = "by.epam.maksim.movietheater.service.impl")
+@Import({DiscountConfig.class})
 public class ServiceConfig {
 
     @Value("${auditoriums.dir}")

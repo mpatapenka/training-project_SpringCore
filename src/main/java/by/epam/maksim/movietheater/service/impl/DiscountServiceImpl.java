@@ -1,5 +1,6 @@
 package by.epam.maksim.movietheater.service.impl;
 
+import by.epam.maksim.movietheater.annotation.DiscountStrategyQualifier;
 import by.epam.maksim.movietheater.domain.Event;
 import by.epam.maksim.movietheater.domain.User;
 import by.epam.maksim.movietheater.service.DiscountService;
@@ -14,6 +15,7 @@ import java.util.Collection;
 @AllArgsConstructor
 public class DiscountServiceImpl implements DiscountService {
 
+    @DiscountStrategyQualifier
     private final Collection<DiscountStrategy> discountStrategies;
 
     @Override

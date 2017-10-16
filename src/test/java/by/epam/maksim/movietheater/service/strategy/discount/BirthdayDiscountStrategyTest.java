@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.support.AnnotationConfigContextLoader;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -20,11 +19,11 @@ import static by.epam.maksim.movietheater.service.DiscountService.NO_DISCOUNT;
 import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = TestAppConfig.class, loader = AnnotationConfigContextLoader.class)
-public class BirthdayDiscountStrategyImplTest {
+@ContextConfiguration(classes = TestAppConfig.class)
+public class BirthdayDiscountStrategyTest {
 
     @Autowired
-    @Qualifier("birthdayDiscountStrategyImpl")
+    @Qualifier("birthdayDiscountStrategy")
     private DiscountStrategy birthdayStrategy;
 
     @Test

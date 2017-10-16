@@ -8,6 +8,6 @@ import org.springframework.context.annotation.PropertySource;
 @Configuration
 @EnableAspectJAutoProxy
 @PropertySource({"classpath:properties/app.properties"})
-@Import({ServiceConfig.class, AspectConfig.class})
+@Import({RepositoryConfig.class, ServiceConfig.class, AspectConfig.class})
 public class AppConfig {
 }
