@@ -1,6 +1,6 @@
 package by.epam.maksim.movietheater.repository.inmemory;
 
-import by.epam.maksim.movietheater.domain.IdentifiedEntity;
+import by.epam.maksim.movietheater.entity.IdentifiedEntity;
 import by.epam.maksim.movietheater.repository.GenericRepository;
 import org.apache.commons.lang3.SerializationUtils;
 
@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 
 abstract class IMGenericRepository<E extends IdentifiedEntity> implements GenericRepository<E> {
 
-    private final AtomicLong idCounter = new AtomicLong(1);
+    final AtomicLong idCounter = new AtomicLong(1);
     final Map<Long, E> storage = new ConcurrentHashMap<>();
 
     @Override

@@ -1,9 +1,9 @@
 package by.epam.maksim.movietheater.service.impl;
 
-import by.epam.maksim.movietheater.domain.Event;
-import by.epam.maksim.movietheater.domain.EventRating;
-import by.epam.maksim.movietheater.domain.Ticket;
-import by.epam.maksim.movietheater.domain.User;
+import by.epam.maksim.movietheater.entity.Event;
+import by.epam.maksim.movietheater.entity.EventRating;
+import by.epam.maksim.movietheater.entity.Ticket;
+import by.epam.maksim.movietheater.entity.User;
 import by.epam.maksim.movietheater.repository.TicketRepository;
 import by.epam.maksim.movietheater.service.BookingService;
 import by.epam.maksim.movietheater.service.DiscountService;
@@ -28,10 +28,9 @@ public class BookingServiceImpl extends AbstractGenericService<Ticket, TicketRep
     private final double multiplierForVipSeats;
 
     @Autowired
-    public BookingServiceImpl(TicketRepository repository, DiscountService discountService, UserService userService,
+    public BookingServiceImpl(DiscountService discountService, UserService userService,
             @Value("${event.highrated.multiplier}") double multiplierForHighRatedEvents,
             @Value("${seats.vip.multiplier}") double multiplierForVipSeats) {
-        super(repository);
         this.discountService = discountService;
         this.userService = userService;
         this.multiplierForHighRatedEvents = multiplierForHighRatedEvents;
@@ -50,7 +49,7 @@ public class BookingServiceImpl extends AbstractGenericService<Ticket, TicketRep
 
     private BigDecimal getTicketPrice(Event event, LocalDateTime airDateTime, User user, long seat, int ticketNumber) {
         BigDecimal basePrice = calculateBasePrice(event);
-        long vipSeatsToPurchase = event.getAuditoriums().get(airDateTime).countVipSeats(Collections.singleton(seat));
+        long vipSeatsToPurchase = event.getAuditorium(airDateTime).countVipSeats(Collections.singleton(seat));
         long regularSeatsToPurchase = 1 - vipSeatsToPurchase;
         byte discount = discountService.getDiscount(user, event, airDateTime, ticketNumber);
 
@@ -100,7 +99,7 @@ public class BookingServiceImpl extends AbstractGenericService<Ticket, TicketRep
     public Set<Ticket> getPurchasedTicketsForEvent(Event event, LocalDateTime dateTime) {
         return getAll().stream()
                 .filter(ticket -> event.equals(ticket.getEvent()))
-                .filter(ticket -> dateTime.isEqual(ticket.getAirDateTime()))
+                .filter(ticket -> dateTime.isEqual(ticket.getSeanceDateTime()))
                 .collect(Collectors.toSet());
     }
 

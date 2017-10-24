@@ -1,6 +1,6 @@
 package by.epam.maksim.movietheater.repository.inmemory;
 
-import by.epam.maksim.movietheater.domain.Counter;
+import by.epam.maksim.movietheater.entity.Counter;
 import by.epam.maksim.movietheater.repository.CounterRepository;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
@@ -19,13 +19,13 @@ public class IMCounterRepository implements CounterRepository {
     private static final Logger log = LoggerFactory.getLogger(IMCounterRepository.class);
 
     private final ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
-    private final Multimap<Class<?>, Counter> typeToCounter = HashMultimap.create();
+    private final Multimap<String, Counter> typeToCounter = HashMultimap.create();
     private final Multimap<String, Counter> nameToCounter = HashMultimap.create();
     private final Multimap<String, Counter> domainToCounter = HashMultimap.create();
 
     @Override
     public Collection<Counter> getByType(Class<?> type) {
-        return typeToCounter.get(type);
+        return typeToCounter.get(type.getName());
     }
 
     @Override
@@ -56,8 +56,8 @@ public class IMCounterRepository implements CounterRepository {
             case 0: return null;
             case 1: return requiredCounters.iterator().next();
             default:
-                log.error("Were stored more than one counter of type '{}', name '{}', domain '{}'.", type, name, domain);
-                throw new IllegalArgumentException("Wrong number of counters with same type, name and domain.");
+                log.error("Were stored more than one counter of type '{}', name '{}', entity '{}'.", type, name, domain);
+                throw new IllegalArgumentException("Wrong number of counters with same type, name and entity.");
         }
     }
 
@@ -69,8 +69,8 @@ public class IMCounterRepository implements CounterRepository {
 
             counter = get(type, name, domain);
             if (counter == null) {
-                counter = new Counter(type, name, domain);
-                typeToCounter.put(type, counter);
+                counter = Counter.build(type.getName(), name, domain);
+                typeToCounter.put(type.getName(), counter);
                 nameToCounter.put(name, counter);
                 domainToCounter.put(domain, counter);
             }
@@ -78,6 +78,26 @@ public class IMCounterRepository implements CounterRepository {
             lock.writeLock().unlock();
         }
         return counter;
+    }
+
+    @Override
+    public Counter save(Counter entity) {
+        throw new UnsupportedOperationException("Unsupported for inmemory implementation.");
+    }
+
+    @Override
+    public void remove(Counter entity) {
+        throw new UnsupportedOperationException("Unsupported for inmemory implementation.");
+    }
+
+    @Override
+    public Counter getById(Long id) {
+        throw new UnsupportedOperationException("Unsupported for inmemory implementation.");
+    }
+
+    @Override
+    public Collection<Counter> getAll() {
+        return typeToCounter.values();
     }
 
 }

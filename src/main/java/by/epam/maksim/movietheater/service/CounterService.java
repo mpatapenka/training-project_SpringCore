@@ -1,6 +1,6 @@
 package by.epam.maksim.movietheater.service;
 
-import by.epam.maksim.movietheater.domain.Counter;
+import by.epam.maksim.movietheater.entity.Counter;
 
 import java.util.Collection;
 

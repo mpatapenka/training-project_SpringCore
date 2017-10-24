@@ -1,7 +1,7 @@
 package by.epam.maksim.movietheater.aspect;
 
-import by.epam.maksim.movietheater.domain.Event;
-import by.epam.maksim.movietheater.domain.Ticket;
+import by.epam.maksim.movietheater.entity.Event;
+import by.epam.maksim.movietheater.entity.Ticket;
 import by.epam.maksim.movietheater.service.CounterService;
 import lombok.AllArgsConstructor;
 import org.aspectj.lang.JoinPoint;

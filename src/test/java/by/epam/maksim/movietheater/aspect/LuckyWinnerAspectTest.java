@@ -1,9 +1,9 @@
 package by.epam.maksim.movietheater.aspect;
 
 import by.epam.maksim.movietheater.config.TestAppConfig;
-import by.epam.maksim.movietheater.domain.Event;
-import by.epam.maksim.movietheater.domain.Ticket;
-import by.epam.maksim.movietheater.domain.User;
+import by.epam.maksim.movietheater.entity.Event;
+import by.epam.maksim.movietheater.entity.Ticket;
+import by.epam.maksim.movietheater.entity.User;
 import by.epam.maksim.movietheater.repository.TicketRepository;
 import by.epam.maksim.movietheater.service.BookingService;
 import com.google.common.collect.Sets;
@@ -62,7 +62,7 @@ public class LuckyWinnerAspectTest {
     public void checkThatUnLuckyTicketPriceNotChange() {
         doReturn(90).when(mockRandom).nextInt(anyInt());
 
-        bookingService.bookTickets(Sets.newHashSet(new Ticket(new User(), new Event(), LocalDateTime.now(), 13, BigDecimal.TEN)));
+        bookingService.bookTickets(Sets.newHashSet(Ticket.build(new User(), new Event(), LocalDateTime.now(), 13, BigDecimal.TEN)));
 
         verify(mockTicketRepository).save(ticketCaptor.capture());
         assertEquals(BigDecimal.TEN, ticketCaptor.getValue().getSellingPrice());
@@ -73,7 +73,7 @@ public class LuckyWinnerAspectTest {
     public void checkThatLuckyTicketPriceIsSetToZeroAndMessageAdded() {
         doReturn(99).when(mockRandom).nextInt(anyInt());
 
-        bookingService.bookTickets(Sets.newHashSet(new Ticket(new User(), new Event(), LocalDateTime.now(), 13, BigDecimal.TEN)));
+        bookingService.bookTickets(Sets.newHashSet(Ticket.build(new User(), new Event(), LocalDateTime.now(), 13, BigDecimal.TEN)));
 
         verify(mockTicketRepository).save(ticketCaptor.capture());
         assertEquals(BigDecimal.ZERO, ticketCaptor.getValue().getSellingPrice());

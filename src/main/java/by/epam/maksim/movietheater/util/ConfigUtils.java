@@ -1,6 +1,6 @@
 package by.epam.maksim.movietheater.util;
 
-import by.epam.maksim.movietheater.domain.Auditorium;
+import by.epam.maksim.movietheater.entity.Auditorium;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -55,7 +55,7 @@ public final class ConfigUtils {
     }
 
     private static Auditorium buildAuditorium(String prefixName, Properties properties) {
-        return new Auditorium(properties.getProperty(prefixName + PROPERTY_NAME_SEPARATOR + AUDITORIUM_NAME_PROPERTY),
+        return Auditorium.build(properties.getProperty(prefixName + PROPERTY_NAME_SEPARATOR + AUDITORIUM_NAME_PROPERTY),
                 Long.valueOf(properties.getProperty(prefixName + PROPERTY_NAME_SEPARATOR + AUDITORIUM_SEATSCOUNT_PROPERTY)),
                 properties.getProperty(prefixName + PROPERTY_NAME_SEPARATOR + AUDITORIUM_VIPSEATS_PROPERTY));
     }

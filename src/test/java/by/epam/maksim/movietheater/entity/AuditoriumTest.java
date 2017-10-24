@@ -1,4 +1,4 @@
-package by.epam.maksim.movietheater.domain;
+package by.epam.maksim.movietheater.entity;
 
 import org.junit.Test;
 
@@ -10,7 +10,7 @@ public class AuditoriumTest {
 	
 	@Test
 	public void testCountVips() {
-		Auditorium a = new Auditorium("", 5, "1,2,3");
+		Auditorium a = Auditorium.build("", 5, "1,2,3");
 		assertEquals(0, a.countVipSeats(Arrays.asList(10L, 20L, 30L)));
 		assertEquals(1, a.countVipSeats(Arrays.asList(10L, 2L, 30L)));
 		assertEquals(2, a.countVipSeats(Arrays.asList(10L, 2L, 3L, 4L, 5L, 6L)));
@@ -18,7 +18,7 @@ public class AuditoriumTest {
 
 	@Test
 	public void testGetAllSeats() {
-	    Auditorium a = new Auditorium("", 10, "1");
+	    Auditorium a = Auditorium.build("", 10, "1");
 	    assertEquals(10, a.getAllSeats().size());
 	}
 

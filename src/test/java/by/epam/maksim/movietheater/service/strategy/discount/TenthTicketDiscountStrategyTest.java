@@ -1,9 +1,9 @@
 package by.epam.maksim.movietheater.service.strategy.discount;
 
 import by.epam.maksim.movietheater.config.TestAppConfig;
-import by.epam.maksim.movietheater.domain.Event;
-import by.epam.maksim.movietheater.domain.Ticket;
-import by.epam.maksim.movietheater.domain.User;
+import by.epam.maksim.movietheater.entity.Event;
+import by.epam.maksim.movietheater.entity.Ticket;
+import by.epam.maksim.movietheater.entity.User;
 import by.epam.maksim.movietheater.service.strategy.DiscountStrategy;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -47,7 +47,7 @@ public class TenthTicketDiscountStrategyTest {
     public void noDiscountInCaseRegisteredUserBoughtEnoughTickets() {
         User user = new User();
         user.getTickets().addAll(IntStream.range(0, 6)
-                .mapToObj(i -> new Ticket(user, new Event(), LocalDateTime.now().plusDays(5), i))
+                .mapToObj(i -> Ticket.build(user, new Event(), LocalDateTime.now().plusDays(5), i))
                 .collect(Collectors.toSet()));
         assertEquals(NO_DISCOUNT, tenthTicketStrategy.calculateDiscount(user, new Event(), LocalDateTime.now(), 5));
     }
@@ -56,7 +56,7 @@ public class TenthTicketDiscountStrategyTest {
     public void noDiscountInCaseRegisteredUserBoughtNotEnoughTickets() {
         User user = new User();
         user.getTickets().addAll(IntStream.range(0, 6)
-                .mapToObj(i -> new Ticket(user, new Event(), LocalDateTime.now().plusDays(5), i))
+                .mapToObj(i -> Ticket.build(user, new Event(), LocalDateTime.now().plusDays(5), i))
                 .collect(Collectors.toSet()));
         assertEquals(NO_DISCOUNT, tenthTicketStrategy.calculateDiscount(user, new Event(), LocalDateTime.now(), 3));
     }
@@ -65,7 +65,7 @@ public class TenthTicketDiscountStrategyTest {
     public void discountInCaseRegisteredUserBoughtExactTenTickets() {
         User user = new User();
         user.getTickets().addAll(IntStream.range(0, 9)
-                .mapToObj(i -> new Ticket(user, new Event(), LocalDateTime.now().plusDays(5), i))
+                .mapToObj(i -> Ticket.build(user, new Event(), LocalDateTime.now().plusDays(5), i))
                 .collect(Collectors.toSet()));
         assertEquals(FIFTY_PERCENTAGE_DISCOUNT, tenthTicketStrategy.calculateDiscount(user, new Event(), LocalDateTime.now(), 1));
     }

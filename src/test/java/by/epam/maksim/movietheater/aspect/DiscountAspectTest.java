@@ -1,8 +1,8 @@
 package by.epam.maksim.movietheater.aspect;
 
 import by.epam.maksim.movietheater.config.TestAppConfig;
-import by.epam.maksim.movietheater.domain.Event;
-import by.epam.maksim.movietheater.domain.User;
+import by.epam.maksim.movietheater.entity.Event;
+import by.epam.maksim.movietheater.entity.User;
 import by.epam.maksim.movietheater.service.CounterService;
 import by.epam.maksim.movietheater.service.DiscountService;
 import by.epam.maksim.movietheater.service.strategy.DiscountStrategy;

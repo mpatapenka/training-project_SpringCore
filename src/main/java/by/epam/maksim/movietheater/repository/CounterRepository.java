@@ -1,10 +1,10 @@
 package by.epam.maksim.movietheater.repository;
 
-import by.epam.maksim.movietheater.domain.Counter;
+import by.epam.maksim.movietheater.entity.Counter;
 
 import java.util.Collection;
 
-public interface CounterRepository {
+public interface CounterRepository extends GenericRepository<Counter> {
     Collection<Counter> getByType(Class<?> type);
     Collection<Counter> getByName(String name);
     Collection<Counter> getByDomain(String domain);

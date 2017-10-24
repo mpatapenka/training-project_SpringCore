@@ -1,6 +1,6 @@
 package by.epam.maksim.movietheater.config;
 
-import by.epam.maksim.movietheater.domain.Event;
+import by.epam.maksim.movietheater.entity.Event;
 import by.epam.maksim.movietheater.repository.TicketRepository;
 import by.epam.maksim.movietheater.service.BookingService;
 import by.epam.maksim.movietheater.service.CounterService;
@@ -66,7 +66,7 @@ public class TestAppConfig {
 
     @Bean
     public BookingService bookingService() {
-        return new BookingServiceImpl(mockTicketRepository(), mockDiscountService(), mockUserService(), multiplierForHighRatedEvents,
+        return new BookingServiceImpl(mockDiscountService(), mockUserService(), multiplierForHighRatedEvents,
                 multiplierForVipSeats);
     }
 

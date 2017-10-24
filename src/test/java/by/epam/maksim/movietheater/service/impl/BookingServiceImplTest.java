@@ -1,11 +1,12 @@
 package by.epam.maksim.movietheater.service.impl;
 
 import by.epam.maksim.movietheater.config.TestAppConfig;
-import by.epam.maksim.movietheater.domain.Auditorium;
-import by.epam.maksim.movietheater.domain.Event;
-import by.epam.maksim.movietheater.domain.EventRating;
-import by.epam.maksim.movietheater.domain.Ticket;
-import by.epam.maksim.movietheater.domain.User;
+import by.epam.maksim.movietheater.entity.Auditorium;
+import by.epam.maksim.movietheater.entity.Event;
+import by.epam.maksim.movietheater.entity.EventRating;
+import by.epam.maksim.movietheater.entity.Seance;
+import by.epam.maksim.movietheater.entity.Ticket;
+import by.epam.maksim.movietheater.entity.User;
 import by.epam.maksim.movietheater.repository.TicketRepository;
 import by.epam.maksim.movietheater.service.BookingService;
 import by.epam.maksim.movietheater.service.DiscountService;
@@ -127,9 +128,9 @@ public class BookingServiceImplTest {
     @Test
     public void checkThatBookTicketsIsStoreNeededInformationForUnregisteredUser() {
         Set<Ticket> tickets = Sets.newSet(
-                new Ticket(null, new Event(), LocalDateTime.now(), 13),
-                new Ticket(null, new Event(), LocalDateTime.now(), 14),
-                new Ticket(null, new Event(), LocalDateTime.now(), 15)
+                Ticket.build(null, new Event(), LocalDateTime.now(), 13),
+                Ticket.build(null, new Event(), LocalDateTime.now(), 14),
+                Ticket.build(null, new Event(), LocalDateTime.now(), 15)
         );
 
         bookingService.bookTickets(tickets);
@@ -141,9 +142,9 @@ public class BookingServiceImplTest {
     public void checkThatBookTicketsIsStoreNeededInformationForRegisteredUser() {
         User user = new User();
         Set<Ticket> tickets = Sets.newSet(
-                new Ticket(user, new Event(), LocalDateTime.now(), 13),
-                new Ticket(user, new Event(), LocalDateTime.now(), 14),
-                new Ticket(null, new Event(), LocalDateTime.now(), 15)
+                Ticket.build(user, new Event(), LocalDateTime.now(), 13),
+                Ticket.build(user, new Event(), LocalDateTime.now(), 14),
+                Ticket.build(null, new Event(), LocalDateTime.now(), 15)
         );
 
         bookingService.bookTickets(tickets);
@@ -157,15 +158,15 @@ public class BookingServiceImplTest {
         LocalDateTime airDate = LocalDateTime.now();
         Event event = createStubEvent(airDate, EventRating.MID);
         Set<Ticket> stubTickets = Sets.newSet(
-                new Ticket(null, event, airDate, 13),
-                new Ticket(null, event, airDate, 14),
-                new Ticket(null, event, airDate.plusDays(3), 15),
-                new Ticket(null, event, airDate.plusDays(1), 15),
-                new Ticket(null, event, airDate.minusDays(3), 15),
-                new Ticket(null, new Event(), airDate, 16),
-                new Ticket(null, new Event(), airDate, 16),
-                new Ticket(null, new Event(), airDate, 16),
-                new Ticket(null, event, airDate, 17)
+                Ticket.build(null, event, airDate, 13),
+                Ticket.build(null, event, airDate, 14),
+                Ticket.build(null, event, airDate.plusDays(3), 15),
+                Ticket.build(null, event, airDate.plusDays(1), 15),
+                Ticket.build(null, event, airDate.minusDays(3), 15),
+                Ticket.build(null, new Event(), airDate, 16),
+                Ticket.build(null, new Event(), airDate, 16),
+                Ticket.build(null, new Event(), airDate, 16),
+                Ticket.build(null, event, airDate, 17)
         );
 
         doReturn(stubTickets).when(mockTicketRepository).getAll();
@@ -176,10 +177,14 @@ public class BookingServiceImplTest {
     }
 
     private Event createStubEvent(LocalDateTime airDateTime, EventRating rating) {
+        Seance seance = new Seance();
+        seance.setAirDateTime(airDateTime);
+        seance.setAuditorium(mockAuditorium);
+
         Event event = new Event();
         event.setBasePrice(basePrice);
         event.setRating(rating);
-        event.getAuditoriums().put(airDateTime, mockAuditorium);
+        event.getSeances().add(seance);
         return event;
     }
 

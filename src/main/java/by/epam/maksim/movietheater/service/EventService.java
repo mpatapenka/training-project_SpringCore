@@ -1,6 +1,6 @@
 package by.epam.maksim.movietheater.service;
 
-import by.epam.maksim.movietheater.domain.Event;
+import by.epam.maksim.movietheater.entity.Event;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;

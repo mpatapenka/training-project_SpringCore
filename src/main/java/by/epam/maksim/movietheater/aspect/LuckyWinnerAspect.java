@@ -1,6 +1,7 @@
 package by.epam.maksim.movietheater.aspect;
 
-import by.epam.maksim.movietheater.domain.Ticket;
+import by.epam.maksim.movietheater.entity.Ticket;
+import by.epam.maksim.movietheater.entity.UserMessage;
 import lombok.AllArgsConstructor;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
@@ -25,7 +26,8 @@ public class LuckyWinnerAspect {
         if (randomPercentage >= PERCENTAGE_TO_BE_LUCKY && !tickets.isEmpty()) {
             Ticket ticket = tickets.iterator().next();
             if (ticket.getUser() != null) {
-                ticket.getUser().getMessages().add("Dude, You are so lucky. You saved " + ticket.getSellingPrice());
+                ticket.getUser().getMessages().add(UserMessage
+                        .build(ticket.getUser(), "Dude, You are so lucky. You saved " + ticket.getSellingPrice()));
             }
             ticket.setSellingPrice(BigDecimal.ZERO);
         }

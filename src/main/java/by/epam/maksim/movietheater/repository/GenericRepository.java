@@ -1,6 +1,6 @@
 package by.epam.maksim.movietheater.repository;
 
-import by.epam.maksim.movietheater.domain.IdentifiedEntity;
+import by.epam.maksim.movietheater.entity.IdentifiedEntity;
 
 import java.util.Collection;
 

@@ -1,8 +1,8 @@
 package by.epam.maksim.movietheater.aspect;
 
 import by.epam.maksim.movietheater.config.TestAppConfig;
-import by.epam.maksim.movietheater.domain.Event;
-import by.epam.maksim.movietheater.domain.Ticket;
+import by.epam.maksim.movietheater.entity.Event;
+import by.epam.maksim.movietheater.entity.Ticket;
 import by.epam.maksim.movietheater.service.BookingService;
 import by.epam.maksim.movietheater.service.CounterService;
 import com.google.common.collect.Sets;
@@ -94,12 +94,12 @@ public class CounterAspectTest {
         Event event3 = buildEvent("event3");
 
         Set<Ticket> ticketsToBook = Sets.newHashSet(
-                new Ticket(null, event1, LocalDateTime.now(), 1),
-                new Ticket(null, event1, LocalDateTime.now(), 2),
-                new Ticket(null, event2, LocalDateTime.now(), 3),
-                new Ticket(null, event3, LocalDateTime.now(), 4),
-                new Ticket(null, event3, LocalDateTime.now(), 5),
-                new Ticket(null, event3, LocalDateTime.now(), 6)
+                Ticket.build(null, event1, LocalDateTime.now(), 1),
+                Ticket.build(null, event1, LocalDateTime.now(), 2),
+                Ticket.build(null, event2, LocalDateTime.now(), 3),
+                Ticket.build(null, event3, LocalDateTime.now(), 4),
+                Ticket.build(null, event3, LocalDateTime.now(), 5),
+                Ticket.build(null, event3, LocalDateTime.now(), 6)
         );
 
         bookingService.bookTickets(ticketsToBook);

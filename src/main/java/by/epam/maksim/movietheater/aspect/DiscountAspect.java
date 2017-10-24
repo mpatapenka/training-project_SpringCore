@@ -1,6 +1,6 @@
 package by.epam.maksim.movietheater.aspect;
 
-import by.epam.maksim.movietheater.domain.User;
+import by.epam.maksim.movietheater.entity.User;
 import by.epam.maksim.movietheater.service.CounterService;
 import lombok.AllArgsConstructor;
 import org.aspectj.lang.annotation.AfterReturning;

@@ -1,6 +1,6 @@
 package by.epam.maksim.movietheater.repository.inmemory;
 
-import by.epam.maksim.movietheater.domain.Ticket;
+import by.epam.maksim.movietheater.entity.Ticket;
 import by.epam.maksim.movietheater.repository.TicketRepository;
 import org.springframework.stereotype.Repository;
 

@@ -1,6 +1,6 @@
 package by.epam.maksim.movietheater.repository.inmemory;
 
-import by.epam.maksim.movietheater.domain.User;
+import by.epam.maksim.movietheater.entity.User;
 import by.epam.maksim.movietheater.repository.UserRepository;
 import org.apache.commons.lang3.SerializationUtils;
 import org.springframework.stereotype.Repository;
