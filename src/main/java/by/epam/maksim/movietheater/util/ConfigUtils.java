@@ -4,18 +4,14 @@ import by.epam.maksim.movietheater.entity.Auditorium;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
-import java.io.Reader;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Properties;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public final class ConfigUtils {
 
@@ -28,18 +24,20 @@ public final class ConfigUtils {
 
     private ConfigUtils() { }
 
-    public static Properties readAllProperties(File propertiesDirectory) {
+    public static Properties readAllProperties(Path propertiesDirectory) {
         Properties properties = new Properties();
-        if (propertiesDirectory != null && propertiesDirectory.exists() && propertiesDirectory.isDirectory()) {
-            Optional<File[]> propertyFiles = Optional.ofNullable(propertiesDirectory
-                    .listFiles(file -> file.isFile() && file.canRead() && file.getName().endsWith(".properties")));
-            Stream.of(propertyFiles.orElse(new File[0])).forEach(file -> {
-                try (Reader reader = new BufferedReader(new FileReader(file))) {
-                    properties.load(reader);
-                } catch (IOException e) {
-                    log.error("Property file '" + file.getName() + "' can't be read, so skip it.", e);
-                }
-            });
+        try {
+            Files.walk(propertiesDirectory)
+                    .filter(p -> p.getFileName().toString().endsWith(".properties"))
+                    .forEach(p -> {
+                        try {
+                            properties.load(Files.newInputStream(p));
+                        } catch (IOException e) {
+                            log.error("Property file '" + p + "' can't be read, so skip it.", e);
+                        }
+                    });
+        } catch (IOException e) {
+            log.error("Properties weren't be loaded, properties directory: " + propertiesDirectory, e);
         }
         return properties;
     }

@@ -3,6 +3,7 @@ package by.epam.maksim.movietheater.repository.inmemory;
 import by.epam.maksim.movietheater.entity.Counter;
 import by.epam.maksim.movietheater.repository.CounterRepository;
 import com.google.common.collect.HashMultimap;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Sets;
 import org.slf4j.Logger;
@@ -97,7 +98,7 @@ public class IMCounterRepository implements CounterRepository {
 
     @Override
     public Collection<Counter> getAll() {
-        return typeToCounter.values();
+        return Lists.newArrayList(typeToCounter.values());
     }
 
 }

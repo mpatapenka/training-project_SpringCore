@@ -1,6 +1,6 @@
 package by.epam.maksim.movietheater.service.impl;
 
-import by.epam.maksim.movietheater.annotation.DiscountStrategyQualifier;
+import by.epam.maksim.movietheater.service.annotation.DiscountStrategyQualifier;
 import by.epam.maksim.movietheater.entity.Event;
 import by.epam.maksim.movietheater.entity.User;
 import by.epam.maksim.movietheater.service.DiscountService;

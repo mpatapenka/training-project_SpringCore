@@ -25,12 +25,9 @@ public class LongSetToStringConverter implements AttributeConverter<Set<Long>, S
 
     @Override
     public Set<Long> convertToEntityAttribute(String dbData) {
-        if (StringUtils.isBlank(dbData)) {
-            return Sets.newHashSet();
-        }
-
-        return StreamSupport.stream(SPLITTER.split(dbData).spliterator(), false)
-                .map(Long::valueOf).collect(Collectors.toSet());
+        return StringUtils.isBlank(dbData) ? Sets.newHashSet()
+                : StreamSupport.stream(SPLITTER.split(dbData).spliterator(), false)
+                        .map(Long::valueOf).collect(Collectors.toSet());
     }
 
 }

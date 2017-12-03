@@ -1,4 +1,4 @@
-package by.epam.maksim.movietheater.annotation;
+package by.epam.maksim.movietheater.service.annotation;
 
 import org.springframework.beans.factory.annotation.Qualifier;
 
