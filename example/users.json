@@ -1,0 +1,22 @@
+[
+  {
+    "firstName": "Maksim",
+    "lastName": "Patapenka",
+    "email": "maksim.patapenka@gmail.com",
+    "birthday": {
+      "year": 1994,
+      "month": 5,
+      "day": 13
+    }
+  },
+  {
+    "firstName": "Viktor",
+    "lastName": "Coi",
+    "email": "viktor.coi@mail.ru",
+    "birthday": {
+      "year": 1960,
+      "month": 1,
+      "day": 1
+    }
+  }
+]

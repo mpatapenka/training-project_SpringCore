@@ -1,0 +1,12 @@
+[
+  {
+    "name": "Movie 43",
+    "basePrice": "6",
+    "rating": "MID"
+  },
+  {
+    "name": "Tor: Ragnarok",
+    "basePrice": "12",
+    "rating": "HIGH"
+  }
+]

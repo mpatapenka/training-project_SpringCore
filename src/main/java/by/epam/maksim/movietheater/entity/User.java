@@ -27,7 +27,7 @@ public class User extends IdentifiedEntity {
     @Column(name = "_last_name", length = 50)
     private String lastName;
 
-    @Column(name = "_email", length = 25, nullable = false)
+    @Column(name = "_email", length = 50, nullable = false)
     private String email;
 
     @Column(name = "_birthday")

@@ -4,14 +4,17 @@ import by.epam.maksim.movietheater.entity.Counter;
 import by.epam.maksim.movietheater.service.AuditoriumService;
 import by.epam.maksim.movietheater.service.CounterService;
 import by.epam.maksim.movietheater.service.DiscountService;
+import by.epam.maksim.movietheater.service.EventService;
+import by.epam.maksim.movietheater.service.UserService;
 import by.epam.maksim.movietheater.util.ReflectionUtils;
 import lombok.AllArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.Arrays;
@@ -33,24 +36,38 @@ public class DataRetrieveController {
 
     private final AuditoriumService auditoriumService;
     private final CounterService counterService;
+    private final UserService userService;
+    private final EventService eventService;
 
     @ModelAttribute(name = "counterDomains")
     public List<String> retrievePageCounterDomains() {
         return ALL_COUNTER_DOMAINS;
     }
 
-    @RequestMapping(value = "/", method = RequestMethod.GET)
+    @GetMapping("/")
     public String getStartPage() {
         return "retrieve";
     }
 
-    @RequestMapping(value = "/auditorium", method = RequestMethod.POST)
+    @GetMapping("/users")
+    public String getAllUsers(Model model) {
+        model.addAttribute("users", userService.getAll());
+        return "retrieve";
+    }
+
+    @GetMapping("/events")
+    public String getAllEvents(Model model) {
+        model.addAttribute("events", eventService.getAll());
+        return "retrieve";
+    }
+
+    @PostMapping("/auditorium")
     public String getAuditoriumByName(@RequestParam String name, Model model) {
         model.addAttribute("auditorium", auditoriumService.getByName(name));
         return "retrieve";
     }
 
-    @RequestMapping(value = "/statistic", method = RequestMethod.POST)
+    @PostMapping("/statistic")
     public String getAuditoriumByName(@RequestParam(required = false) String type, @RequestParam(required = false) String name,
             @RequestParam(required = false) String domain, Model model) {
         Collection<Counter> counters = Collections.emptyList();
