@@ -11,6 +11,7 @@ import by.epam.maksim.movietheater.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -84,6 +85,7 @@ public class BookingServiceImpl extends AbstractGenericService<Ticket, TicketRep
     }
 
     @Override
+    @Transactional
     public void bookTickets(Set<Ticket> tickets) {
         tickets.forEach(ticket -> {
             User user = ticket.getUser();
@@ -96,6 +98,7 @@ public class BookingServiceImpl extends AbstractGenericService<Ticket, TicketRep
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Set<Ticket> getPurchasedTicketsForEvent(Event event, LocalDateTime dateTime) {
         return getAll().stream()
                 .filter(ticket -> event.equals(ticket.getEvent()))
